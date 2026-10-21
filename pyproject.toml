@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pathway-crowd"
+version = "0.1.0"
+description = "Reproducible small-event pedestrian scenario simulation"
+requires-python = ">=3.12,<3.13"
+license = "MIT"
+dependencies = ["jupedsim==1.4.2", "pydantic>=2.12,<3"]
+
+[project.optional-dependencies]
+analysis = ["pedpy==1.5.1"]
+dev = ["pytest>=8,<10", "ruff>=0.14,<1"]
+
+[project.scripts]
+pathway = "pathway.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pathway"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]

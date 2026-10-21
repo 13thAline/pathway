@@ -1,0 +1,8 @@
+# Third-party notices
+
+Pathway's MIT license applies to original project files. It does not relicense dependencies or referenced publications.
+
+- [JuPedSim](https://github.com/PedestrianDynamics/jupedsim) 1.4.2: LGPL-3.0-or-later, as stated in its distributed license file. Preserve its applicable notices and distribution obligations.
+- [PedPy](https://pedpy.readthedocs.io/stable/) 1.5.1: MIT; optional trajectory analysis and verification.
+- Pydantic, NumPy, Shapely and other dependencies are installed under their respective package licenses. Exact versions are recorded in `uv.lock`; package distributions include their own license files.
+- NDMA, *Managing Crowd at Events and Venues of Mass Gathering* (2014), is background planning material. The [official guide](https://ndma.gov.in/sites/default/files/PDF/Reports/managingcrowdsguide.pdf) is not redistributed here. Reference to the guide does not imply endorsement.

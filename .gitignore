@@ -1,0 +1,35 @@
+# Local workspace files
+.agents/
+.codex/
+.aws/
+
+# Secrets and machine state
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+node_modules/
+dist/
+.next/
+.vercel/
+.DS_Store
+
+# Raw observations and generated runs are not public by default
+data/private/
+runs/
+*.sqlite
+*.sqlite3
+
+# Supplied government reference: cite the official source, do not relicense it
+/managingcrowdsguide.pdf
+
+# Internal documents and local contributor context
+/AGENTS.md
+/docs/
+/Idea.md
+/requirements-spike.txt
+/scripts/engine_spike.py

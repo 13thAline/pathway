@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0",
+  "id": "corridor",
+  "revision": 1,
+  "units": "metres_seconds",
+  "provenance": {
+    "kind": "synthetic"
+  },
+  "geometry": {
+    "boundary": [
+      [
+        24.0,
+        0.0
+      ],
+      [
+        24.0,
+        8.0
+      ],
+      [
+        0.0,
+        8.0
+      ],
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    "obstacles": []
+  },
+  "origins": [
+    {
+      "id": "west",
+      "positions": [
+        [
+          1.0,
+          3.0
+        ],
+        [
+          1.0,
+          4.0
+        ],
+        [
+          1.0,
+          5.0
+        ]
+      ]
+    }
+  ],
+  "exits": [
+    {
+      "id": "east",
+      "polygon": [
+        [
+          23.0,
+          2.0
+        ],
+        [
+          23.0,
+          6.0
+        ],
+        [
+          22.0,
+          6.0
+        ],
+        [
+          22.0,
+          2.0
+        ]
+      ]
+    }
+  ],
+  "services": [],
+  "routes": [
+    {
+      "id": "main",
+      "exit_id": "east",
+      "service_ids": []
+    }
+  ],
+  "demand": [
+    {
+      "id": "west",
+      "origin_id": "west",
+      "route_id": "main",
+      "count": 20,
+      "start_s": 0.0,
+      "end_s": 10.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    }
+  ],
+  "zones": [
+    {
+      "id": "upstream",
+      "polygon": [
+        [
+          10.0,
+          1.0
+        ],
+        [
+          10.0,
+          7.0
+        ],
+        [
+          1.0,
+          7.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    }
+  ],
+  "lines": [
+    {
+      "id": "departure",
+      "points": [
+        [
+          20.0,
+          1.0
+        ],
+        [
+          20.0,
+          7.0
+        ]
+      ]
+    }
+  ],
+  "seed": 42,
+  "dt_s": 0.01,
+  "sample_interval_s": 0.5,
+  "horizon_s": 180.0,
+  "model": {
+    "name": "CollisionFreeSpeedModel",
+    "radius_m": 0.2,
+    "time_gap_s": 1.0,
+    "strength_neighbor_repulsion": 8.0,
+    "range_neighbor_repulsion": 0.1,
+    "strength_geometry_repulsion": 5.0,
+    "range_geometry_repulsion": 0.02
+  }
+}
