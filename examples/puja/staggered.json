@@ -1,0 +1,923 @@
+{
+  "schema_version": "1.0",
+  "id": "puja_staggered_500",
+  "revision": 1,
+  "units": "metres_seconds",
+  "provenance": {
+    "kind": "synthetic",
+    "venue": "60x40 m envelope; flat; not a surveyed site",
+    "arrivals": "60/40 origins; uniform within peak/tail windows; editable assumptions",
+    "service": "three visit queues; synthetic durations, not a calibrated ritual model",
+    "route_policy": "fixed assigned routes; nominal compliance; no rerouting model",
+    "second_exit": "opening plus nominal 50% assignment within each service lane",
+    "medical_access": "reserved strip with partial barrier; pedestrian occupancy only; no ambulance or stretcher certification"
+  },
+  "geometry": {
+    "boundary": [
+      [
+        49.0,
+        18.2
+      ],
+      [
+        49.0,
+        30.0
+      ],
+      [
+        60.0,
+        30.0
+      ],
+      [
+        60.0,
+        10.0
+      ],
+      [
+        49.0,
+        10.0
+      ],
+      [
+        49.0,
+        17.0
+      ],
+      [
+        48.0,
+        17.0
+      ],
+      [
+        48.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        40.0
+      ],
+      [
+        48.0,
+        40.0
+      ],
+      [
+        48.0,
+        18.2
+      ]
+    ],
+    "obstacles": [
+      [
+        [
+          44.0,
+          25.0
+        ],
+        [
+          44.0,
+          31.0
+        ],
+        [
+          36.0,
+          31.0
+        ],
+        [
+          36.0,
+          25.0
+        ]
+      ],
+      [
+        [
+          18.0,
+          5.0
+        ],
+        [
+          18.0,
+          10.0
+        ],
+        [
+          12.0,
+          10.0
+        ],
+        [
+          12.0,
+          5.0
+        ]
+      ],
+      [
+        [
+          14.0,
+          25.0
+        ],
+        [
+          14.0,
+          29.0
+        ],
+        [
+          10.0,
+          29.0
+        ],
+        [
+          10.0,
+          25.0
+        ]
+      ],
+      [
+        [
+          46.0,
+          33.5
+        ],
+        [
+          46.0,
+          34.0
+        ],
+        [
+          2.0,
+          34.0
+        ],
+        [
+          2.0,
+          33.5
+        ]
+      ]
+    ]
+  },
+  "origins": [
+    {
+      "id": "A",
+      "positions": [
+        [
+          1.0,
+          19.0
+        ],
+        [
+          1.0,
+          21.0
+        ],
+        [
+          1.0,
+          23.0
+        ]
+      ]
+    },
+    {
+      "id": "B",
+      "positions": [
+        [
+          20.0,
+          1.0
+        ],
+        [
+          22.0,
+          1.0
+        ],
+        [
+          24.0,
+          1.0
+        ]
+      ]
+    }
+  ],
+  "exits": [
+    {
+      "id": "main",
+      "polygon": [
+        [
+          59.0,
+          16.6
+        ],
+        [
+          59.0,
+          18.6
+        ],
+        [
+          57.0,
+          18.6
+        ],
+        [
+          57.0,
+          16.6
+        ]
+      ]
+    }
+  ],
+  "services": [
+    {
+      "id": "visit_0",
+      "positions": [
+        [
+          35.0,
+          18.0
+        ],
+        [
+          34.0,
+          18.0
+        ],
+        [
+          33.0,
+          18.0
+        ],
+        [
+          32.0,
+          18.0
+        ],
+        [
+          31.0,
+          18.0
+        ],
+        [
+          30.0,
+          18.0
+        ],
+        [
+          29.0,
+          18.0
+        ],
+        [
+          28.0,
+          18.0
+        ]
+      ],
+      "duration_s": [
+        1.5,
+        3.0
+      ],
+      "head_tolerance_m": 0.3
+    },
+    {
+      "id": "visit_1",
+      "positions": [
+        [
+          35.0,
+          21.0
+        ],
+        [
+          34.0,
+          21.0
+        ],
+        [
+          33.0,
+          21.0
+        ],
+        [
+          32.0,
+          21.0
+        ],
+        [
+          31.0,
+          21.0
+        ],
+        [
+          30.0,
+          21.0
+        ],
+        [
+          29.0,
+          21.0
+        ],
+        [
+          28.0,
+          21.0
+        ]
+      ],
+      "duration_s": [
+        1.5,
+        3.0
+      ],
+      "head_tolerance_m": 0.3
+    },
+    {
+      "id": "visit_2",
+      "positions": [
+        [
+          35.0,
+          24.0
+        ],
+        [
+          34.0,
+          24.0
+        ],
+        [
+          33.0,
+          24.0
+        ],
+        [
+          32.0,
+          24.0
+        ],
+        [
+          31.0,
+          24.0
+        ],
+        [
+          30.0,
+          24.0
+        ],
+        [
+          29.0,
+          24.0
+        ],
+        [
+          28.0,
+          24.0
+        ]
+      ],
+      "duration_s": [
+        1.5,
+        3.0
+      ],
+      "head_tolerance_m": 0.3
+    }
+  ],
+  "routes": [
+    {
+      "id": "A_lane0_main",
+      "exit_id": "main",
+      "service_ids": [
+        "visit_0"
+      ]
+    },
+    {
+      "id": "A_lane0_second",
+      "exit_id": "main",
+      "service_ids": [
+        "visit_0"
+      ]
+    },
+    {
+      "id": "A_lane1_main",
+      "exit_id": "main",
+      "service_ids": [
+        "visit_1"
+      ]
+    },
+    {
+      "id": "A_lane1_second",
+      "exit_id": "main",
+      "service_ids": [
+        "visit_1"
+      ]
+    },
+    {
+      "id": "A_lane2_main",
+      "exit_id": "main",
+      "service_ids": [
+        "visit_2"
+      ]
+    },
+    {
+      "id": "A_lane2_second",
+      "exit_id": "main",
+      "service_ids": [
+        "visit_2"
+      ]
+    },
+    {
+      "id": "B_lane0_main",
+      "exit_id": "main",
+      "service_ids": [
+        "visit_0"
+      ]
+    },
+    {
+      "id": "B_lane0_second",
+      "exit_id": "main",
+      "service_ids": [
+        "visit_0"
+      ]
+    },
+    {
+      "id": "B_lane1_main",
+      "exit_id": "main",
+      "service_ids": [
+        "visit_1"
+      ]
+    },
+    {
+      "id": "B_lane1_second",
+      "exit_id": "main",
+      "service_ids": [
+        "visit_1"
+      ]
+    },
+    {
+      "id": "B_lane2_main",
+      "exit_id": "main",
+      "service_ids": [
+        "visit_2"
+      ]
+    },
+    {
+      "id": "B_lane2_second",
+      "exit_id": "main",
+      "service_ids": [
+        "visit_2"
+      ]
+    }
+  ],
+  "demand": [
+    {
+      "id": "A_lane0_main_peak",
+      "origin_id": "A",
+      "route_id": "A_lane0_main",
+      "count": 35,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "A_lane0_main_tail",
+      "origin_id": "A",
+      "route_id": "A_lane0_main",
+      "count": 15,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "A_lane0_second_peak",
+      "origin_id": "A",
+      "route_id": "A_lane0_second",
+      "count": 35,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "A_lane0_second_tail",
+      "origin_id": "A",
+      "route_id": "A_lane0_second",
+      "count": 15,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "A_lane1_main_peak",
+      "origin_id": "A",
+      "route_id": "A_lane1_main",
+      "count": 35,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "A_lane1_main_tail",
+      "origin_id": "A",
+      "route_id": "A_lane1_main",
+      "count": 15,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "A_lane1_second_peak",
+      "origin_id": "A",
+      "route_id": "A_lane1_second",
+      "count": 35,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "A_lane1_second_tail",
+      "origin_id": "A",
+      "route_id": "A_lane1_second",
+      "count": 15,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "A_lane2_main_peak",
+      "origin_id": "A",
+      "route_id": "A_lane2_main",
+      "count": 35,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "A_lane2_main_tail",
+      "origin_id": "A",
+      "route_id": "A_lane2_main",
+      "count": 15,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "A_lane2_second_peak",
+      "origin_id": "A",
+      "route_id": "A_lane2_second",
+      "count": 35,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "A_lane2_second_tail",
+      "origin_id": "A",
+      "route_id": "A_lane2_second",
+      "count": 15,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "B_lane0_main_peak",
+      "origin_id": "B",
+      "route_id": "B_lane0_main",
+      "count": 24,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "B_lane0_main_tail",
+      "origin_id": "B",
+      "route_id": "B_lane0_main",
+      "count": 10,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "B_lane0_second_peak",
+      "origin_id": "B",
+      "route_id": "B_lane0_second",
+      "count": 23,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "B_lane0_second_tail",
+      "origin_id": "B",
+      "route_id": "B_lane0_second",
+      "count": 10,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "B_lane1_main_peak",
+      "origin_id": "B",
+      "route_id": "B_lane1_main",
+      "count": 24,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "B_lane1_main_tail",
+      "origin_id": "B",
+      "route_id": "B_lane1_main",
+      "count": 10,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "B_lane1_second_peak",
+      "origin_id": "B",
+      "route_id": "B_lane1_second",
+      "count": 23,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "B_lane1_second_tail",
+      "origin_id": "B",
+      "route_id": "B_lane1_second",
+      "count": 10,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "B_lane2_main_peak",
+      "origin_id": "B",
+      "route_id": "B_lane2_main",
+      "count": 23,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "B_lane2_main_tail",
+      "origin_id": "B",
+      "route_id": "B_lane2_main",
+      "count": 10,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "B_lane2_second_peak",
+      "origin_id": "B",
+      "route_id": "B_lane2_second",
+      "count": 23,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    },
+    {
+      "id": "B_lane2_second_tail",
+      "origin_id": "B",
+      "route_id": "B_lane2_second",
+      "count": 10,
+      "start_s": 0.0,
+      "end_s": 600.0,
+      "speed_m_s": [
+        1.0,
+        1.4
+      ]
+    }
+  ],
+  "zones": [
+    {
+      "id": "approach_A",
+      "polygon": [
+        [
+          12.0,
+          18.0
+        ],
+        [
+          12.0,
+          25.0
+        ],
+        [
+          0.5,
+          25.0
+        ],
+        [
+          0.5,
+          18.0
+        ]
+      ]
+    },
+    {
+      "id": "approach_B",
+      "polygon": [
+        [
+          26.0,
+          0.5
+        ],
+        [
+          26.0,
+          12.0
+        ],
+        [
+          18.0,
+          12.0
+        ],
+        [
+          18.0,
+          0.5
+        ]
+      ]
+    },
+    {
+      "id": "junction",
+      "polygon": [
+        [
+          28.0,
+          15.0
+        ],
+        [
+          28.0,
+          26.0
+        ],
+        [
+          21.0,
+          26.0
+        ],
+        [
+          21.0,
+          15.0
+        ]
+      ]
+    },
+    {
+      "id": "holding",
+      "polygon": [
+        [
+          28.0,
+          12.0
+        ],
+        [
+          28.0,
+          27.0
+        ],
+        [
+          18.0,
+          27.0
+        ],
+        [
+          18.0,
+          12.0
+        ]
+      ]
+    },
+    {
+      "id": "service_queue",
+      "polygon": [
+        [
+          36.0,
+          16.0
+        ],
+        [
+          36.0,
+          26.0
+        ],
+        [
+          27.0,
+          26.0
+        ],
+        [
+          27.0,
+          16.0
+        ]
+      ]
+    },
+    {
+      "id": "departure_merge",
+      "polygon": [
+        [
+          48.0,
+          14.0
+        ],
+        [
+          48.0,
+          24.0
+        ],
+        [
+          40.0,
+          24.0
+        ],
+        [
+          40.0,
+          14.0
+        ]
+      ]
+    },
+    {
+      "id": "main_gate",
+      "polygon": [
+        [
+          50.0,
+          16.0
+        ],
+        [
+          50.0,
+          20.0
+        ],
+        [
+          46.0,
+          20.0
+        ],
+        [
+          46.0,
+          16.0
+        ]
+      ]
+    },
+    {
+      "id": "second_gate",
+      "polygon": [
+        [
+          50.0,
+          25.0
+        ],
+        [
+          50.0,
+          30.0
+        ],
+        [
+          46.0,
+          30.0
+        ],
+        [
+          46.0,
+          25.0
+        ]
+      ]
+    },
+    {
+      "id": "medical_access",
+      "polygon": [
+        [
+          47.0,
+          35.0
+        ],
+        [
+          47.0,
+          39.0
+        ],
+        [
+          1.0,
+          39.0
+        ],
+        [
+          1.0,
+          35.0
+        ]
+      ]
+    }
+  ],
+  "lines": [
+    {
+      "id": "main_gate",
+      "points": [
+        [
+          48.5,
+          17.0
+        ],
+        [
+          48.5,
+          18.2
+        ]
+      ]
+    }
+  ],
+  "seed": 42,
+  "dt_s": 0.01,
+  "sample_interval_s": 1.0,
+  "horizon_s": 1200.0,
+  "model": {
+    "name": "CollisionFreeSpeedModel",
+    "radius_m": 0.2,
+    "time_gap_s": 1.0,
+    "strength_neighbor_repulsion": 8.0,
+    "range_neighbor_repulsion": 0.1,
+    "strength_geometry_repulsion": 5.0,
+    "range_geometry_repulsion": 0.02
+  }
+}

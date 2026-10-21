@@ -2,7 +2,7 @@
 
 Pedestrian simulation and scenario comparison for small Indian events, starting with a Puja/pandal venue.
 
-The current simulation kernel supports timed arrivals, outside waiting, service queues, geometry validation, directional flow and density measurements. It exports trajectories, visitor records and reproducible run manifests. The event comparison interface is under development.
+The simulation kernel supports timed arrivals, outside waiting, service queues, geometry validation, directional flow and density measurements. The Puja template includes two entrances, three service lanes and alternative departure arrangements. The browser interface is under development.
 
 ## Setup
 
@@ -27,6 +27,24 @@ Use a new output directory for each run. Available fixtures include a corridor, 
 ```
 
 Each run includes scenario inputs, generated demand, trajectories, population counts, zone measurements, line crossings and visitor timings. `manifest.json` records completion status, versions and file hashes. Interrupted and unfinished runs retain partial results.
+
+## Compare event plans
+
+```sh
+.venv/bin/pathway puja --variant baseline --count 500 --output runs/puja.json
+.venv/bin/pathway compare --counts 500 --seeds 0 1 2 --workers 3 --output runs/comparison
+```
+
+The comparison runs the baseline, an additional exit with assigned routes, and staggered arrivals. Visitors retain the same sampled walking speeds and service durations. Reports include per-zone changes, unfinished visitors and arrival-time shifts; generated JSON/CSV files stay in the selected output directory. Reuse verified completed run files with `--resume` and otherwise identical inputs. Failed or cancelled runs remain explicitly reported rather than retried silently.
+
+Optional `--settings file.json` accepts gate widths, arrival windows, service/walking-speed ranges, timestep and horizon. The default full study uses 250/500/750 visitors and ten seeds. A second exit is a combined layout/routing intervention; staggered arrivals change scheduling, with off-site costs outside the model.
+
+The 750-person burst can take several minutes per run. Use `--wall-timeout 600` for the full study on a development laptop; a wall timeout retains partial results and differs from reaching the simulation horizon. Audit exports and generate local charts with:
+
+```sh
+.venv/bin/python scripts/audit_study.py runs/comparison --deep
+MPLCONFIGDIR=/tmp/pathway-mpl .venv/bin/python scripts/plot_puja.py --study runs/comparison --output runs/charts
+```
 
 ## Tests
 
