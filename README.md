@@ -2,7 +2,7 @@
 
 Pedestrian simulation and scenario comparison for small Indian events, starting with a Puja/pandal venue.
 
-The simulation kernel supports timed arrivals, outside waiting, service queues, geometry validation, directional flow and density measurements. The Puja template includes two entrances, three service lanes and alternative departure arrangements. The browser interface is under development.
+The simulation kernel supports timed arrivals, outside waiting, service queues, geometry validation, directional flow and density measurements. The Puja template includes two entrances, three service lanes and alternative departure arrangements. The browser workspace supports local fresh runs, saved replay, input editing, comparison and report downloads.
 
 ## Setup
 
@@ -46,11 +46,33 @@ The 750-person burst can take several minutes per run. Use `--wall-timeout 600` 
 MPLCONFIGDIR=/tmp/pathway-mpl .venv/bin/python scripts/plot_puja.py --study runs/comparison --output runs/charts
 ```
 
+## Browser workspace
+
+Requires Node.js 22.12+ and the Python environment above. Tested with Node 26.12.
+
+```sh
+npm ci --prefix web
+npm run build --prefix web
+.venv/bin/python -m pathway.server
+```
+
+Open [the local workspace](http://127.0.0.1:8765). It starts with a labelled saved 500-person example. Edit inputs and choose **Run local simulation** for a fresh result. **Pin reference** or **Clone scenario** keeps a result for comparison; reports, replay files and scenario JSON can be downloaded. Editing inputs clears the active results until a matching run is selected.
+
+The local service listens on loopback only, supervises one simulation process, and bounds pending jobs, runtime and output storage. Run files are retained under ignored `runs/web/`. A cancelled or timed-out run can have partial output; process failures without a sealed replay remain explicitly unavailable. Service restart marks interrupted jobs rather than inventing results. Keep this prototype local; public compute is outside its current scope.
+
+For frontend development, start the Python service with `--dev-origin http://127.0.0.1:5173`, then run `npm run dev --prefix web`. The Vite development server proxies local API requests. For a static replay-only preview, use `npm run preview --prefix web` after building. It supports the three saved examples, comparison and downloads; fresh computation requires the local service. A fully cached offline website and public deployment are separate release work.
+
+Saved demos are compact, synthetic product fixtures from matched 500-person runs. Display positions are sampled every 2 seconds and rounded to 0.001 m; reported measurements retain their original 1-second samples. The replay does not interpolate or recalculate physics. Each file has a SHA256 envelope and includes its original scenario, demand, source and raw-output hashes. A checksum detects changed bytes; it is not an authenticity signature or model validation.
+
 ## Tests
 
 ```sh
 .venv/bin/python -m pytest -q
+npm test --prefix web
+npm run test:e2e --prefix web
 ```
+
+Browser tests require Playwright Chromium (`cd web && npx playwright install chromium`) or `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/path/to/chromium`. They start the local service if it is unavailable and write artifacts under ignored `runs/`.
 
 ## Scope
 

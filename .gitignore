@@ -33,3 +33,7 @@ runs/
 /Idea.md
 /requirements-spike.txt
 /scripts/engine_spike.py
+
+# Browser verification artifacts
+/web/playwright-report/
+/web/test-results/

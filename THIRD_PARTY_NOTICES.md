@@ -6,3 +6,5 @@ Pathway's MIT license applies to original project files. It does not relicense d
 - [PedPy](https://pedpy.readthedocs.io/stable/) 1.5.1: MIT; optional trajectory analysis and verification.
 - Pydantic, NumPy, Shapely and other dependencies are installed under their respective package licenses. Exact versions are recorded in `uv.lock`; package distributions include their own license files.
 - NDMA, *Managing Crowd at Events and Venues of Mass Gathering* (2014), is background planning material. The [official guide](https://ndma.gov.in/sites/default/files/PDF/Reports/managingcrowdsguide.pdf) is not redistributed here. Reference to the guide does not imply endorsement.
+
+Browser application dependencies are pinned in `web/package-lock.json`. React, React DOM and Phosphor Icons use the MIT license; Geist uses the SIL Open Font License 1.1. Their notices ship with the browser build under `licenses/`. Vite, Tailwind CSS, TypeScript, Vitest, Playwright and Prettier are development/build dependencies under their respective package licenses. Fonts are served locally; no external font service is required.
