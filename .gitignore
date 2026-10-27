@@ -6,6 +6,7 @@
 /deckcraft/
 /tools/deckcraft/
 /.deckcraft/
+.vscode/
 
 # Secrets and machine state
 .env
