@@ -136,8 +136,8 @@ test("crowd patterns synchronize recorded maps, charts, comparison and exports",
   expect(html).toContain("<svg");
   expect(html).toContain("data:text/csv");
   expect(html).toContain(selectedData.manifest.scenario_sha256);
-  await report.saveAs("/tmp/sahajyatra-crowd-report.html");
-  await panel.screenshot({ path: "/tmp/sahajyatra-crowd-patterns.png" });
+  await report.saveAs("/tmp/pathway-crowd-report.html");
+  await panel.screenshot({ path: "/tmp/pathway-crowd-patterns.png" });
   expect(errors).toEqual([]);
 });
 
@@ -199,5 +199,5 @@ test("missing samples stay unavailable and incompatible charts are rejected on m
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
-  await panel.screenshot({ path: "/tmp/sahajyatra-crowd-mobile.png" });
+  await panel.screenshot({ path: "/tmp/pathway-crowd-mobile.png" });
 });

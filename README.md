@@ -1,8 +1,14 @@
-# SahajYatra
+# Pathway
 
-**Intelligent Event Flow and Accessibility Planning**, powered by the Pathway pedestrian simulation engine. Local decision support for small community events in India, starting with a synthetic Puja/pandal venue.
+**Intelligent Event Flow and Accessibility Planning**, built on JuPedSim pedestrian simulation. Local decision support for small community events in India, starting with a synthetic Puja/pandal venue.
 
 The simulation kernel supports timed arrivals, outside waiting, service queues, geometry validation, directional flow and density measurements. The Puja template includes two entrances, three service lanes and alternative departure arrangements. The browser workspace supports local fresh runs, saved replay, input editing, comparison and report downloads.
+
+The name **Pathway** means more than a route: it represents finding a practical way through a planning problem by comparing assumptions and alternatives. **Find a better way through.**
+
+## Purpose and Sustainable Development Goals
+
+Pathway helps community organizers discuss visitor movement and physical access together. Its intended contribution aligns with [SDG target 11.7](https://sdgs.un.org/goals/goal11), through attention to accessible public gathering spaces; [target 10.2](https://sdgs.un.org/goals/goal10), through explicit inclusion checks; and [target 16.7](https://sdgs.un.org/goals/goal16), through reports that make planning assumptions and trade-offs available for discussion. This is a project-level interpretation of those targets, not UN endorsement or measured progress against official SDG indicators. Field evaluation and participation by organizers and accessibility users are still needed.
 
 ## Repository checklist
 
@@ -125,9 +131,9 @@ Coordinates use metres and time uses seconds. The examples are synthetic. Output
 
 Original project files are licensed under [MIT](LICENSE). Dependencies and reference material retain their own terms; see [third-party notices](THIRD_PARTY_NOTICES.md).
 
-## SahajYatra planning workflow
+## Pathway planning workflow
 
-SahajYatra — Intelligent Event Flow and Accessibility Planning — extends the Pathway engine with an organizer workflow. No cloud account, payment service or external API is needed.
+Pathway — Intelligent Event Flow and Accessibility Planning — combines an organizer workflow with a reproducible pedestrian simulation engine. No cloud account, payment service or external API is needed.
 
 1. **Event Setup:** enter an optional name, select an event type and describe arrival provenance. Metadata does not change pedestrian physics. The only venue is the synthetic Puja template.
 2. **Visitor Arrivals:** configure attendance, peak share and arrival durations in minutes. The preview follows the backend’s integer allocations. Staggered arrivals are uniform across the full period, so segment counts are approximate expectations.
@@ -144,7 +150,7 @@ The synthetic venue has not been surveyed or calibrated against a real event. Or
 
 The inspection rules reference [UN India, UNESCO and IIT Kharagpur’s 2025 Durga Puja accessibility guide](https://india.un.org/sites/default/files/2025-10/English%20SOP%20.pdf): entrance §2.3, internal circulation §2.4, resting/seating §2.6 and signage §2.8. The app checks selected observations; the complete document contains further contextual requirements, including ramps, pinch points, handrails, surfaces, support facilities and volunteer preparation. The guide is linked rather than bundled.
 
-Research concepts and poster attribution supplied by the project owner: Anuj Nautiyal and Dr. Amit Agarwal (IIT Roorkee), *Transforming Registration Data into Activity-Based Travel Demand: A Reproducible Framework for Planning Large-Scale Pilgrimage Mobility*; Ashish Ranjan (SPA Bhopal), *Regulated versus Unregulated Pedestrian Flow at a Mega-Pilgrimage Node: A LOS Analysis of the Mahakaleshwar Temple Precinct, Ujjain*. Conference attribution has not been independently verified. SahajYatra uses simplified arrival scenarios and existing movement measurements; it does not reproduce those studies.
+Research concepts and poster attribution supplied by the project owner: Anuj Nautiyal and Dr. Amit Agarwal (IIT Roorkee), *Transforming Registration Data into Activity-Based Travel Demand: A Reproducible Framework for Planning Large-Scale Pilgrimage Mobility*; Ashish Ranjan (SPA Bhopal), *Regulated versus Unregulated Pedestrian Flow at a Mega-Pilgrimage Node: A LOS Analysis of the Mahakaleshwar Temple Precinct, Ujjain*. Conference attribution has not been independently verified. Pathway uses simplified arrival scenarios and existing movement measurements; it does not reproduce those studies.
 
 Implemented P0 includes local event setup, arrival preview, simulation/replay, valid plan comparison, deterministic explanations, explicit inspection JSON persistence and integrated HTML reporting. Existing CLI repeated studies remain available. P1 browser CSV schedules, repeated-study controls, validated comfort interpretation and field calibration are future work. P2 surveyed venue editing, mobility-specific route analysis, localization and mobile/offline inspection are future work. No achieved social-impact statistics are claimed; future evaluation could measure setup time, comprehension, inspection issues found and agreement with observed counts after calibration.
 

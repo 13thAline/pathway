@@ -72,3 +72,9 @@ Final extension verification: **86 Python tests**, **115 frontend tests**, and *
 ## Publication verification — 27 October 2026
 
 The release check reran all **86 Python tests**, **115 frontend tests** and **11 browser workflows** successfully, together with the production build, Ruff, Prettier and whitespace checks. The fresh 500-person browser workflow took 38.6 s in this run; it is a measured test duration, not a runtime guarantee. Application source hashes match the preceding visual analytics verification. README now indexes the submission checklist and documents actual optional environment variables; the technical design includes component and request-lifecycle diagrams, HTTP contracts and execution limits. Samples and the MIT license are included. Private working documents and generated presentation artifacts remain excluded.
+
+## Pathway branding — 28 October 2026
+
+Restored Pathway as the product name in the interface, browser title, report headings, export filenames, tests and current usage/architecture documentation. README explains the name and its intended alignment with SDG targets 11.7, 10.2 and 16.7 without claiming achieved impact. Historical verification entries above retain their original context. Simulation inputs, engine code, saved fixtures, hashes and metric definitions are unchanged.
+
+Verification rerun: **86 Python tests**, **115 frontend tests**, **11 Chromium workflows**, production build, Ruff, Prettier and whitespace checks passed. The 500-person fresh-run browser workflow took 37.7 s. Presentation and design working files remain outside the public source tree.

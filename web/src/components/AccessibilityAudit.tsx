@@ -190,7 +190,7 @@ export function AccessibilityAudit({
           disabled={!valid}
           onClick={() =>
             download(
-              "sahajyatra-inspection.json",
+              "pathway-inspection.json",
               JSON.stringify(parseAudit(audit), null, 2),
             )
           }

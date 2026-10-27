@@ -9,7 +9,7 @@ test("organizer completes the saved 500-person planning and inspection report jo
   await page.goto("/");
   await expect(
     page.getByRole("heading", {
-      name: "SahajYatra — Intelligent Event Flow and Accessibility Planning",
+      name: "Pathway — Intelligent Event Flow and Accessibility Planning",
     }),
   ).toBeVisible();
   await expect(page.getByText("Saved replay · succeeded")).toBeVisible();
@@ -85,9 +85,9 @@ test("organizer completes the saved 500-person planning and inspection report jo
   expect(html).toContain("Comparison · selected minus reference");
   expect(html).toContain("Saved demonstration");
   expect(html).toContain("Results do not certify safety");
-  await file.saveAs("/tmp/sahajyatra-demo-report.html");
+  await file.saveAs("/tmp/pathway-demo-report.html");
   await page.screenshot({
-    path: "/tmp/sahajyatra-planning-desktop.png",
+    path: "/tmp/pathway-planning-desktop.png",
     fullPage: true,
   });
   await page.getByLabel("Event name (optional)").fill("Different event");
@@ -145,7 +145,7 @@ test("inspection missing values, invalid values and mobile keyboard access remai
     ),
   ).toBeTruthy();
   await page.screenshot({
-    path: "/tmp/sahajyatra-planning-mobile.png",
+    path: "/tmp/pathway-planning-mobile.png",
     fullPage: true,
   });
 });

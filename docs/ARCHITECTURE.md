@@ -1,6 +1,6 @@
-# SahajYatra technical design document
+# Pathway technical design document
 
-SahajYatra is the organizer workflow; Pathway remains the simulation engine. The browser uses React/TypeScript, Vite and Tailwind. Python 3.12 uses JuPedSim 1.4.2, Pydantic and Shapely; PedPy is optional analysis. No accounts, database or external API are required.
+Pathway combines the organizer workflow and the existing simulation engine in one local application. The browser uses React/TypeScript, Vite and Tailwind. Python 3.12 uses JuPedSim 1.4.2, Pydantic and Shapely; PedPy is optional analysis. No accounts, database or external API are required.
 
 This document describes the implemented local application, its data contracts, execution boundaries and verification strategy. Geometry is a synthetic 60 × 40 m venue; coordinates use metres and engine time uses seconds. Organizer-facing arrival controls convert minutes to seconds without changing the simulation model. Event descriptions and inspection records are separate from simulation inputs.
 

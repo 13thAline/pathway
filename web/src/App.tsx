@@ -192,7 +192,7 @@ export default function App() {
   const exportReport = () =>
     selected &&
     download(
-      `sahajyatra-${selected.replay.manifest.scenario_sha256.slice(0, 10)}-report.html`,
+      `pathway-${selected.replay.manifest.scenario_sha256.slice(0, 10)}-report.html`,
       reportHtml(selected, reference, evidence),
       "text/html",
     );
@@ -422,12 +422,12 @@ export default function App() {
         <a
           href="#"
           className="flex items-center gap-2.5 text-xl font-semibold tracking-tight"
-          aria-label="SahajYatra home"
+          aria-label="Pathway home"
         >
           <span className="grid size-8 place-items-center rounded-md bg-[#2e563b] text-white">
             <ArrowsSplit size={20} weight="bold" />
           </span>
-          SahajYatra
+          Pathway
           <span className="ml-3 hidden border-l border-[#d8dfd2] pl-4 text-[11px] font-normal tracking-normal text-stone-500 sm:inline">
             Event planning workspace
           </span>
@@ -459,7 +459,7 @@ export default function App() {
           <div>
             <p className="eyebrow mb-2">WORKSPACE / SYNTHETIC EVENTS</p>
             <h1 className="text-[26px] font-medium tracking-[-.055em] sm:text-[32px]">
-              SahajYatra — Intelligent Event Flow and Accessibility Planning
+              Pathway — Intelligent Event Flow and Accessibility Planning
             </h1>
             <p className="mt-2 text-sm text-[#53604d]">
               Explore visitor arrivals, pedestrian movement, alternative plans
@@ -1484,7 +1484,7 @@ export default function App() {
           className="mt-8 flex flex-col justify-between gap-3 border-t border-[#dce2d6] py-5 text-[10px] leading-relaxed text-stone-500 sm:flex-row"
         >
           <p className="max-w-[650px]">
-            SahajYatra uses the Pathway engine with JuPedSim 1.4.2. Inputs are
+            Pathway uses JuPedSim 1.4.2 for pedestrian movement. Inputs are
             assumptions, not a surveyed event. Crowded results are numerically
             sensitive. No field calibration, injury prediction or operational
             approval.

@@ -537,7 +537,7 @@ function AvailablePatterns({
         className="secondary"
         onClick={() =>
           download(
-            `sahajyatra-${r.manifest.scenario_sha256.slice(0, 10)}-zone-samples.csv`,
+            `pathway-${r.manifest.scenario_sha256.slice(0, 10)}-zone-samples.csv`,
             analyticalCsv(r),
             "text/csv",
           )
