@@ -1,3 +1,9 @@
+import { analyticsReport } from "./analyticsReport";
+import { validateAnalytics } from "./analytics";
+import {
+  planningReportSections,
+  type PlanningEvidence,
+} from "./planningReport";
 import {
   defaults,
   type Envelope,
@@ -303,6 +309,7 @@ export async function decodeEnvelope(
   );
   if (!r.frames.every((f: any) => byTime.get(f.t) === f.people.length))
     throw Error("Replay frames disagree with population counts.");
+  validateAnalytics(r);
   return { envelope, replay: r, origin };
 }
 export function comparisonReason(a: Summary, b: Summary): string | null {
@@ -370,13 +377,30 @@ export const escapeHtml = (s: unknown) =>
         c
       ]!,
   );
-export function reportHtml(current: Loaded, reference: Loaded | null): string {
+export function reportHtml(
+  current: Loaded,
+  reference: Loaded | null,
+  evidence?: PlanningEvidence,
+): string {
+  const planning = planningReportSections(current, reference, evidence);
   const r = current.replay,
     s = r.summary,
     a = reference?.replay.summary,
     reason = a ? comparisonReason(a, s) : null;
+  const metricLabels: Record<string, string> = {
+    completed_count: "Completed journeys (people)",
+    unfinished_count: "Unfinished visitors (people)",
+    clearance_s: "All-person clearance (s)",
+    restricted_mean_journey_s:
+      "Observed mean journey, censored if unfinished (s)",
+    completed_journey_p95_s: "Completed-only journey p95 (s)",
+    mean_outside_wait_s: "Mean outside waiting (s)",
+    total_formal_queue_wait_s: "Total observed formal queue waiting (person-s)",
+    peak_outside_count: "Peak outside waiting (people)",
+    peak_active_count: "Peak inside population (people)",
+  };
   const row = (k: string, v: unknown) =>
-    `<tr><th>${escapeHtml(k)}</th><td>${escapeHtml(v)}</td></tr>`;
+    `<tr><th>${escapeHtml(metricLabels[k] ?? k)}</th><td>${escapeHtml(v)}</td></tr>`;
   const zoneDeltas =
     a && !reason
       ? `<h3>Local tradeoffs</h3><table><tr><th>Zone</th><th>Exposure delta (person-s)</th><th>Usable area changed</th></tr>${Object.entries(
@@ -390,7 +414,7 @@ export function reportHtml(current: Loaded, reference: Loaded | null): string {
             "",
           )}</table><p>Negative means lower exposure, not a safety rating.</p>`
       : "";
-  return `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Pathway run report</title><style>body{font:16px system-ui;max-width:1000px;margin:48px auto;padding:20px;color:#24342b}table{border-collapse:collapse;width:100%;margin:24px 0}td,th{padding:10px;text-align:left;border-bottom:1px solid #ccd4ce}code{word-break:break-all}h1{font-size:30px}@media print{body{margin:0}}</style><h1>Pathway · synthetic event report</h1><p>${escapeHtml(current.origin === "file" ? "Imported replay" : current.origin === "local" ? "Fresh local simulation" : "Saved demonstration")} · ${escapeHtml(r.manifest.status)} · single seed ${r.request.seed}</p><p>Observed until ${fmt(s.simulated_time_s)} s; requested horizon ${fmt(s.horizon_s)} s. Synthetic, uncalibrated model. No event approval, force or injury prediction.</p><h2>Inputs</h2><pre>${escapeHtml(JSON.stringify(r.request, null, 2))}</pre><h2>Results</h2><table>${Object.entries(
+  return `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>SahajYatra planning report</title><style>body{font:16px system-ui;max-width:1000px;margin:48px auto;padding:20px;color:#24342b}table{border-collapse:collapse;width:100%;margin:24px 0}td,th{padding:10px;text-align:left;border-bottom:1px solid #ccd4ce}code{word-break:break-all}h1{font-size:30px}figure{margin:24px 0;break-inside:avoid}figure svg,.crowd-report>svg{width:100%;height:auto}figcaption{font-weight:600}pre{white-space:pre-wrap;overflow-wrap:anywhere}article, tr{break-inside:avoid}a{color:#244d35}@media print{body{margin:0}h2,h3{break-after:avoid}.full-samples{display:none}}</style><h1>SahajYatra · synthetic event planning report</h1>${planning.overview}<p>${escapeHtml(current.origin === "file" ? "Imported replay" : current.origin === "local" ? "Fresh local simulation" : "Saved demonstration")} · ${escapeHtml(r.manifest.status)} · single seed ${r.request.seed}</p><p>Observed until ${fmt(s.simulated_time_s)} s; requested horizon ${fmt(s.horizon_s)} s. Synthetic, uncalibrated model. No event approval, force or injury prediction.</p><h2>Inputs</h2><pre>${escapeHtml(JSON.stringify(r.request, null, 2))}</pre><h2>Results</h2><table>${Object.entries(
     s.metrics,
   )
     .map(([k, v]) => row(k, fmt(v)))
@@ -405,7 +429,7 @@ export function reportHtml(current: Loaded, reference: Loaded | null): string {
     )
     .join(
       "",
-    )}</table><p>Zones overlap. Do not sum exposure across them. Density is sampled; small-area gate values depend on the measurement polygon.</p>${
+    )}</table><p>Density is the simulated count divided by usable area. Person-seconds integrate sampled presence over time. Zones overlap. Do not sum exposure across them. Density is sampled; small-area gate values depend on the measurement polygon.</p>${
     a
       ? `<h2>Comparison · selected minus reference</h2><p>Reference scenario: <code>${escapeHtml(reference!.replay.manifest.scenario_sha256)}</code></p>${
           reason
@@ -415,5 +439,5 @@ export function reportHtml(current: Loaded, reference: Loaded | null): string {
                 .join("")}</table>${zoneDeltas}`
         }`
       : ""
-  }<h2>Provenance</h2><p>Scenario <code>${escapeHtml(r.manifest.scenario_sha256)}</code></p><p>Demand <code>${escapeHtml(r.manifest.demand_sha256)}</code></p><p>Replay <code>${current.envelope.sha256}</code></p><p>Kernel <code>${escapeHtml(r.manifest.environment.kernel_source_sha256)}</code></p><h2>Limits</h2><ul>${r.limitations.map((x) => `<li>${escapeHtml(x)}</li>`).join("")}</ul><p>Additional exit includes assigned routes. Staggering reschedules arrivals; off-site costs excluded. Nominal route following is assumed. Reserved-strip geometry is not vehicle access certification.</p></html>`;
+  }${analyticsReport(current, reference)}${planning.review}<h2>Provenance</h2><p>Scenario <code>${escapeHtml(r.manifest.scenario_sha256)}</code></p><p>Demand <code>${escapeHtml(r.manifest.demand_sha256)}</code></p><p>Replay <code>${current.envelope.sha256}</code></p><p>Kernel <code>${escapeHtml(r.manifest.environment.kernel_source_sha256)}</code></p><h2>Limits</h2><ul>${r.limitations.map((x) => `<li>${escapeHtml(x)}</li>`).join("")}</ul><p>Additional exit includes assigned routes. Staggering reschedules arrivals; off-site costs excluded. Nominal route following is assumed. Reserved-strip geometry is not vehicle access certification.</p></html>`;
 }

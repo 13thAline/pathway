@@ -52,3 +52,26 @@ def test_pairing_rejects_unmatched_service_assumptions():
     scenarios["second_exit"] = puja_scenario("second_exit", 6, settings={"service_s": [5, 10]})
     with pytest.raises(ValueError, match="unmatched"):
         check_pairing(scenarios)
+
+
+def test_browser_arrival_vectors_match_actual_scenario_demand():
+    """Keep browser integer allocation fixtures tied to the real request generator."""
+    import json
+    from pathlib import Path
+
+    vectors = json.loads(
+        (Path(__file__).parents[1] / "web/src/fixtures/arrival-allocation.json").read_text()
+    )
+    for vector in vectors:
+        for variant in VARIANTS:
+            scenario = puja_scenario(
+                variant, vector["count"], settings={"peak_fraction": vector["fraction"]}
+            )
+            assert sum(stream.count for stream in scenario.demand) == vector["count"]
+            assert sum(
+                stream.count for stream in scenario.demand if stream.id.endswith("_peak")
+            ) == vector["peak"]
+            if variant == "staggered":
+                assert all(
+                    stream.start_s == 0 and stream.end_s == 600 for stream in scenario.demand
+                )

@@ -1,3 +1,4 @@
+import { densityColor } from "./analytics";
 import { useEffect, useRef } from "react";
 import type { Frame, Scenario } from "./types";
 export function Venue({
@@ -5,11 +6,15 @@ export function Venue({
   frame,
   zones = false,
   label = "Venue map",
+  zoneOverlay,
+  onZoneSelect,
 }: {
   scenario: Scenario | null;
   frame: Frame | null;
   zones?: boolean;
   label?: string;
+  zoneOverlay?: { id: string; value: number | null; maximum: number };
+  onZoneSelect?: (id: string) => void;
 }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
@@ -114,6 +119,35 @@ export function Venue({
           c.setLineDash([]);
         }
       }
+      if (zoneOverlay) {
+        const selectedZone = scenario.zones.find(
+          (z) => z.id === zoneOverlay.id,
+        );
+        if (selectedZone) {
+          c.save();
+          c.beginPath();
+          for (const ring of [
+            scenario.geometry.boundary,
+            ...scenario.geometry.obstacles,
+          ]) {
+            ring.forEach((p, i) => {
+              const [x, y] = xy(p);
+              i ? c.lineTo(x, y) : c.moveTo(x, y);
+            });
+            c.closePath();
+          }
+          c.clip("evenodd");
+          path(selectedZone.polygon);
+          c.fillStyle = densityColor(zoneOverlay.value, zoneOverlay.maximum);
+          c.globalAlpha = 0.8;
+          c.fill();
+          c.globalAlpha = 1;
+          c.strokeStyle = "#6d28d9";
+          c.lineWidth = 2;
+          c.stroke();
+          c.restore();
+        }
+      }
       for (const service of scenario.services) {
         const pts = service.positions.map(xy);
         c.beginPath();
@@ -180,9 +214,38 @@ export function Venue({
     observer.observe(element);
     paint();
     return () => observer.disconnect();
-  }, [scenario, frame, zones]);
+  }, [scenario, frame, zones, zoneOverlay]);
   return (
     <canvas
+      onClick={(e) => {
+        if (!scenario || !onZoneSelect) return;
+        const box = e.currentTarget.getBoundingClientRect();
+        const scale = Math.min((box.width - 64) / 64, (box.height - 54) / 44);
+        const x = (e.clientX - box.left - (box.width - 60 * scale) / 2) / scale;
+        const y =
+          40 - (e.clientY - box.top - (box.height - 40 * scale) / 2) / scale;
+        const hits = scenario.zones.filter((z) => {
+          let inside = false;
+          for (
+            let i = 0, j = z.polygon.length - 1;
+            i < z.polygon.length;
+            j = i++
+          ) {
+            const a = z.polygon[i],
+              b = z.polygon[j];
+            if (
+              a[1] > y !== b[1] > y &&
+              x < ((b[0] - a[0]) * (y - a[1])) / (b[1] - a[1]) + a[0]
+            )
+              inside = !inside;
+          }
+          return inside;
+        });
+        if (hits.length) {
+          const previous = hits.findIndex((z) => z.id === zoneOverlay?.id);
+          onZoneSelect(hits[(previous + 1) % hits.length].id);
+        }
+      }}
       ref={canvas}
       className="h-full w-full"
       role="img"
