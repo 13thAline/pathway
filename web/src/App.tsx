@@ -1,3 +1,17 @@
+import { CrowdPatterns } from "./components/CrowdPatterns";
+import {
+  minutesToSeconds,
+  secondsToMinutes,
+  percentageToFraction,
+  fractionToPercentage,
+} from "./arrivals";
+import { EventSetup } from "./components/EventSetup";
+import { ArrivalPreview } from "./components/ArrivalPreview";
+import { AccessibilityAudit } from "./components/AccessibilityAudit";
+import { DecisionSummary } from "./components/DecisionSummary";
+import { ReportPanel } from "./components/ReportPanel";
+import { initialEvent, inspectionContext } from "./planning";
+import { newAudit } from "./accessibility";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowDown,
@@ -84,7 +98,7 @@ function NumberInput({
   onChange: (n: number) => void;
   min: number;
   max: number;
-  step?: number;
+  step?: number | "any";
   unit?: string;
 }) {
   return (
@@ -143,6 +157,10 @@ function Trend({ loaded, time }: { loaded: Loaded; time: number }) {
   );
 }
 export default function App() {
+  const [event, setEvent] = useState(initialEvent);
+  const [audit, setAudit] = useState(() =>
+    newAudit(inspectionContext(initialEvent, defaults), initialEvent.name),
+  );
   const [draft, setDraft] = useState<Request>(structuredClone(defaults)),
     [loaded, setLoaded] = useState<Loaded | null>(null),
     [reference, setReference] = useState<Loaded | null>(null),
@@ -170,6 +188,14 @@ export default function App() {
     selected =
       loaded && key === requestKey(loaded.replay.request) ? loaded : null,
     stale = !!loaded && !selected;
+  const evidence = { event, audit, context: inspectionContext(event, draft) };
+  const exportReport = () =>
+    selected &&
+    download(
+      `sahajyatra-${selected.replay.manifest.scenario_sha256.slice(0, 10)}-report.html`,
+      reportHtml(selected, reference, evidence),
+      "text/html",
+    );
   const active = jobs.find((j) => !TERMINAL.includes(j.status)),
     end = selected?.replay.summary.simulated_time_s ?? 0;
   const select = (value: Loaded) => {
@@ -396,12 +422,12 @@ export default function App() {
         <a
           href="#"
           className="flex items-center gap-2.5 text-xl font-semibold tracking-tight"
-          aria-label="Pathway home"
+          aria-label="SahajYatra home"
         >
           <span className="grid size-8 place-items-center rounded-md bg-[#2e563b] text-white">
             <ArrowsSplit size={20} weight="bold" />
           </span>
-          pathway
+          SahajYatra
           <span className="ml-3 hidden border-l border-[#d8dfd2] pl-4 text-[11px] font-normal tracking-normal text-stone-500 sm:inline">
             Event planning workspace
           </span>
@@ -433,10 +459,12 @@ export default function App() {
           <div>
             <p className="eyebrow mb-2">WORKSPACE / SYNTHETIC EVENTS</p>
             <h1 className="text-[26px] font-medium tracking-[-.055em] sm:text-[32px]">
-              A little planning. More room to move.
+              SahajYatra — Intelligent Event Flow and Accessibility Planning
             </h1>
-            <p className="mt-2 text-xs text-[#768071]">
-              Explore how arrivals, queues and exits shape a small event.
+            <p className="mt-2 text-sm text-[#53604d]">
+              Explore visitor arrivals, pedestrian movement, alternative plans
+              and manual accessibility observations. Early planning support;
+              results do not certify safety or evacuation performance.
             </p>
           </div>
           <span className="flex items-center gap-2 rounded-full border border-[#d6dfcf] bg-[#ecf1e7] px-3 py-1.5 text-[10px] text-[#5a6b50]">
@@ -444,7 +472,35 @@ export default function App() {
             Research prototype · synthetic inputs
           </span>
         </div>
-        <div className="workspace-grid grid gap-5">
+        <nav aria-label="Planning workflow" className="workflow-nav">
+          {[
+            ["event-setup", "Event Setup"],
+            ["visitor-arrivals", "Visitor Arrivals"],
+            ["venue-simulation", "Venue Simulation"],
+            ["crowd-patterns", "Crowd Patterns"],
+            ["plan-comparison", "Plan Comparison"],
+            ["accessibility-inspection", "Accessibility Inspection"],
+            ["planning-report", "Planning Report"],
+          ].map(([id, label], index) => (
+            <a key={id} href={`#${id}`}>
+              {index + 1}. {label}
+            </a>
+          ))}
+        </nav>
+        <div className="flex flex-wrap gap-3 mb-5">
+          <a className="primary" href="#event-setup">
+            Start planning
+          </a>
+          <button
+            className="secondary"
+            disabled={loading}
+            onClick={() => void demo("baseline")}
+          >
+            Load saved demonstration
+          </button>
+        </div>
+        <EventSetup event={event} onChange={setEvent} request={draft} />
+        <div id="venue-simulation" className="workspace-grid grid gap-5">
           <aside className="min-w-0 overflow-hidden rounded-xl border border-[#dce2d6] bg-[#fbfcf9]">
             <form
               onSubmit={(e) => {
@@ -455,7 +511,7 @@ export default function App() {
               <div className="flex items-center justify-between border-b border-[#e2e7dd] px-5 py-4">
                 <h2 className="flex items-center gap-2 text-xs font-semibold">
                   <SlidersHorizontal size={16} />
-                  Scenario setup
+                  Venue Simulation
                 </h2>
                 <span className="eyebrow">01</span>
               </div>
@@ -518,69 +574,76 @@ export default function App() {
                     min={1}
                     max={750}
                   />
-                  <NumberInput
-                    label="Random seed"
-                    value={draft.seed}
-                    onChange={(n) => update({ seed: n })}
-                    min={0}
-                    max={4294967295}
-                  />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <NumberInput
-                    label="Main exit"
-                    unit="m"
-                    value={draft.settings.main_gate_width_m}
-                    onChange={(n) => setting("main_gate_width_m", n)}
-                    min={0}
-                    max={4}
-                    step={0.1}
+                    label="Peak ends"
+                    step="any"
+                    unit="min"
+                    value={secondsToMinutes(draft.settings.peak_end_s)}
+                    onChange={(n) => setting("peak_end_s", minutesToSeconds(n))}
+                    min={0.001}
+                    max={30}
                   />
                   <NumberInput
-                    label="Second exit"
-                    unit="m"
-                    value={draft.settings.second_gate_width_m}
-                    onChange={(n) => setting("second_gate_width_m", n)}
-                    min={0.5}
-                    max={4}
-                    step={0.1}
+                    label="Last arrival"
+                    step="any"
+                    unit="min"
+                    value={secondsToMinutes(draft.settings.arrival_end_s)}
+                    onChange={(n) =>
+                      setting("arrival_end_s", minutesToSeconds(n))
+                    }
+                    min={0.001}
+                    max={30}
                   />
                 </div>
-                <p className="-mt-3 text-[10px] leading-relaxed text-stone-500">
-                  Second exit opens only in the additional-exit plan. A width of
-                  0 closes the main gate.
-                </p>
+                <NumberInput
+                  label="Arrivals in peak window"
+                  unit="%"
+                  value={fractionToPercentage(draft.settings.peak_fraction)}
+                  onChange={(n) =>
+                    setting("peak_fraction", percentageToFraction(n))
+                  }
+                  min={0}
+                  max={100}
+                />
+                <ArrivalPreview request={draft} selected={selected} />
                 <details className="border-t border-[#e2e7dd] pt-4">
                   <summary className="cursor-pointer text-[11px] font-medium">
-                    Timing & movement
+                    Advanced: timing & movement
                   </summary>
                   <div className="mt-4 space-y-4">
                     <div className="grid grid-cols-2 gap-3">
                       <NumberInput
-                        label="Peak ends"
-                        unit="s"
-                        value={draft.settings.peak_end_s}
-                        onChange={(n) => setting("peak_end_s", n)}
-                        min={1}
-                        max={1799}
+                        label="Main exit"
+                        unit="m"
+                        value={draft.settings.main_gate_width_m}
+                        onChange={(n) => setting("main_gate_width_m", n)}
+                        min={0}
+                        max={4}
+                        step={0.1}
                       />
                       <NumberInput
-                        label="Last arrival"
-                        unit="s"
-                        value={draft.settings.arrival_end_s}
-                        onChange={(n) => setting("arrival_end_s", n)}
-                        min={2}
-                        max={1800}
+                        label="Second exit"
+                        unit="m"
+                        value={draft.settings.second_gate_width_m}
+                        onChange={(n) => setting("second_gate_width_m", n)}
+                        min={0.5}
+                        max={4}
+                        step={0.1}
                       />
                     </div>
+                    <p className="-mt-3 text-[10px] leading-relaxed text-stone-500">
+                      Second exit opens only in the additional-exit plan. A
+                      width of 0 closes the main gate.
+                    </p>
                     <NumberInput
-                      label="Arrivals in peak window"
-                      unit="%"
-                      value={draft.settings.peak_fraction * 100}
-                      onChange={(n) => setting("peak_fraction", n / 100)}
+                      label="Random seed"
+                      value={draft.seed}
+                      onChange={(n) => update({ seed: n })}
                       min={0}
-                      max={100}
-                    />
+                      max={4294967295}
+                    />{" "}
                     <div className="grid grid-cols-2 gap-3">
                       <NumberInput
                         label="Service min"
@@ -902,7 +965,7 @@ export default function App() {
                   </span>
                 </div>
                 {selected ? (
-                  <Trend loaded={selected} time={time} />
+                  <Trend loaded={selected} time={Math.min(time, end)} />
                 ) : (
                   <div className="h-12 border-b border-dashed border-stone-200" />
                 )}
@@ -949,7 +1012,7 @@ export default function App() {
                       <Repeat size={16} />
                     </button>
                     <span className="tabular-nums text-xs font-medium">
-                      {clock(selected ? time : 0)}{" "}
+                      {clock(selected ? Math.min(time, end) : 0)}{" "}
                       <span className="font-normal text-stone-400">
                         / {clock(end)}
                       </span>
@@ -1043,7 +1106,7 @@ export default function App() {
                     selected &&
                     download(
                       `pathway-${selected.replay.manifest.scenario_sha256.slice(0, 10)}-report.html`,
-                      reportHtml(selected, reference),
+                      reportHtml(selected, reference, evidence),
                       "text/html",
                     )
                   }
@@ -1075,7 +1138,7 @@ export default function App() {
                 <div className="mb-4 flex items-center justify-between gap-3">
                   <div>
                     <h2 className="text-xs font-semibold">
-                      What changed in this run?
+                      Understand Your Simulation
                     </h2>
                     <p className="mt-1 text-[10px] text-stone-500">
                       Whole-run metrics · one seed · not a safety score
@@ -1112,6 +1175,14 @@ export default function App() {
                 )}
                 <div className="grid grid-cols-2 gap-x-4 gap-y-5 lg:grid-cols-4">
                   {[
+                    ["Completed journeys", "completed_count", "people"],
+                    ["Peak outside waiting", "peak_outside_count", "people"],
+                    ["Mean outside wait", "mean_outside_wait_s", "s"],
+                    [
+                      "Formal queue wait (all visitors)",
+                      "total_formal_queue_wait_s",
+                      "person-s",
+                    ],
                     ["Observed mean journey", "restricted_mean_journey_s", "s"],
                     ["Peak inside", "peak_active_count", "people"],
                     ["Unfinished", "unfinished_count", "people"],
@@ -1140,6 +1211,42 @@ export default function App() {
                     </div>
                   ))}
                 </div>
+                <p className="mt-4 text-xs">
+                  {selected.replay.summary.all_arrivals_observed
+                    ? "All scheduled arrivals observed."
+                    : "Not all scheduled arrivals observed."}{" "}
+                  Run status:{" "}
+                  {selected.replay.manifest.status.replaceAll("_", " ")}. Total
+                  simulated demand: {selected.replay.request.count}.
+                </p>
+                <p className="mt-2 text-xs">
+                  Highest observed zone density:{" "}
+                  {(() => {
+                    const peak = Object.entries(
+                      selected.replay.summary.zones,
+                    ).sort(
+                      (a, b) =>
+                        b[1].peak_density_per_m2 - a[1].peak_density_per_m2,
+                    )[0];
+                    return peak
+                      ? `${zoneName(peak[0])} · ${fmt(peak[1].peak_density_per_m2, 3)} people/m²`
+                      : "Unavailable";
+                  })()}
+                  .
+                </p>
+                <details className="mt-4 text-xs">
+                  <summary>What do these measurements mean?</summary>
+                  <p>
+                    Density is simulated people in a monitored region divided by
+                    its usable area. Sampled person-seconds integrate presence
+                    over time; zones overlap and must not be summed. Journey
+                    time includes outside waiting; unfinished journeys are
+                    censored at the observation end. Formal queue waiting is
+                    time observed in modelled service queues, separate from
+                    outside waiting. Values depend on assumed movement and
+                    service.
+                  </p>
+                </details>
                 <details className="mt-5 border-t border-[#e2e7dd] pt-4">
                   <summary className="cursor-pointer text-[11px] font-medium">
                     Zone measurements & local tradeoffs
@@ -1350,12 +1457,34 @@ export default function App() {
             </section>
           </section>
         </div>
+        <CrowdPatterns
+          selected={selected}
+          reference={reference}
+          time={time}
+          onTime={(next) => {
+            setPlaying(false);
+            setTime(next);
+          }}
+        />
+        <DecisionSummary selected={selected} reference={reference} />
+        <AccessibilityAudit
+          audit={audit}
+          onChange={setAudit}
+          context={evidence.context}
+          eventName={event.name}
+        />
+        <ReportPanel
+          selected={selected}
+          reference={reference}
+          evidence={evidence}
+          onDownload={exportReport}
+        />
         <footer
           id="method"
           className="mt-8 flex flex-col justify-between gap-3 border-t border-[#dce2d6] py-5 text-[10px] leading-relaxed text-stone-500 sm:flex-row"
         >
           <p className="max-w-[650px]">
-            Pathway explores a synthetic venue using JuPedSim 1.4.2. Inputs are
+            SahajYatra uses the Pathway engine with JuPedSim 1.4.2. Inputs are
             assumptions, not a surveyed event. Crowded results are numerically
             sensitive. No field calibration, injury prediction or operational
             approval.

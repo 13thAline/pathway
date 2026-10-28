@@ -2,6 +2,11 @@
 .agents/
 .codex/
 .aws/
+# Optional local presentation tooling and projects
+/deckcraft/
+/tools/deckcraft/
+/.deckcraft/
+.vscode/
 
 # Secrets and machine state
 .env
@@ -29,7 +34,10 @@ runs/
 
 # Internal documents and local contributor context
 /AGENTS.md
-/docs/
+/docs/*
+!/docs/ARCHITECTURE.md
+!/docs/BASELINE_STATUS.md
+!/docs/DEMO.md
 /Idea.md
 /requirements-spike.txt
 /scripts/engine_spike.py

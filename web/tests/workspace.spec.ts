@@ -165,9 +165,9 @@ test("horizon-limited fresh results remain explicit and exportable", async ({
   await page.goto("/");
   await expect(page.getByText("Saved replay · succeeded")).toBeVisible();
   await page.getByLabel("Total visitors").fill("30");
-  await page.getByText("Timing & movement", { exact: true }).click();
-  await page.getByLabel("Peak ends").fill("10");
-  await page.getByLabel("Last arrival").fill("30");
+  await page.getByText("Advanced: timing & movement", { exact: true }).click();
+  await page.getByLabel("Peak ends").fill(String(10 / 60));
+  await page.getByLabel("Last arrival").fill("0.5");
   await page.getByLabel("Simulation horizon").fill("30");
   await page
     .getByRole("button", { name: "Run local simulation", exact: true })
