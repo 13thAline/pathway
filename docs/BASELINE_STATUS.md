@@ -1,6 +1,6 @@
 # Baseline status
 
-Inspected 27 October 2026 before SahajYatra edits, on branch `feat/sahajyatra-p0`. Existing unrelated `.vscode/` files were left untouched.
+Inspected 27 October 2026 before the Pathway organizer-workflow edits. Existing unrelated `.vscode/` files were left untouched.
 
 - Frontend: 8 existing Vitest tests passed; TypeScript/Vite production build passed.
 - Python sandbox run: 83 passed, two HTTP integration setup errors because loopback sockets are prohibited. This is an execution-environment restriction; elevated rerun passed: all 85 tests.
@@ -51,7 +51,7 @@ Changed:
 - `README.md`, `THIRD_PARTY_NOTICES.md`: setup, features, evidence boundaries, references and future scope.
 - `.gitignore`: permits only the three explicitly requested public documents while retaining exclusions for internal documentation.
 
-No changes to `src/pathway/`, simulation schemas, API contracts, raw output formats, saved demonstrations or dependency manifests/locks. No new runtime dependency. The implementation was verified on `feat/sahajyatra-p0` before publication. Existing unrelated `.vscode/` files remain untouched.
+No changes to `src/pathway/`, simulation schemas, API contracts, raw output formats, saved demonstrations or dependency manifests/locks. No new runtime dependency. The implementation was verified on the implementation branch before publication. Existing unrelated `.vscode/` files remain untouched.
 
 ## Remaining capabilities
 
